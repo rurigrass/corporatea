@@ -33,7 +33,7 @@ const page = async ({ params }: pageProps) => {
       </div>
 
       {/* FORM */}
-      <Editor />
+      <Editor companyId={company.id} />
 
       <div className="w-full flex justify-end">
         <Button type="submit" className="w-full" form="company-spill-form">

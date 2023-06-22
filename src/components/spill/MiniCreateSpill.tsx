@@ -31,7 +31,7 @@ const MiniCreateSpill: FC<MiniCreateSpillProps> = ({ session }) => {
         </div>
         <Input
           readOnly
-          onClick={() => router.push(pathname + "/submit")}
+          onClick={() => router.push(pathname + "/spill")}
           placeholder="Spill the tea"
         />
         <Button
