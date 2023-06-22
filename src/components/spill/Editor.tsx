@@ -4,8 +4,12 @@ import TextareaAutosize from "react-textarea-autosize";
 import { useForm } from "react-hook-form";
 import { SpillCreationRequest, SpillValidator } from "@/lib/validators/spill";
 import { zodResolver } from "@hookform/resolvers/zod";
-import type EditorJS from "@editorjs/editorjs";
+import EditorJS from "@editorjs/editorjs";
 import { uploadFiles } from "@/lib/uploadthing";
+import { z } from "zod";
+import { Button } from "../ui/Button";
+
+type FormData = z.infer<typeof SpillValidator>;
 
 interface EditorProps {
   companyId: string;
@@ -16,7 +20,7 @@ const Editor: FC<EditorProps> = ({ companyId }) => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<SpillCreationRequest>({
+  } = useForm<FormData>({
     resolver: zodResolver(SpillValidator),
     defaultValues: {
       companyId,
@@ -27,6 +31,7 @@ const Editor: FC<EditorProps> = ({ companyId }) => {
 
   const ref = useRef<EditorJS>();
   const [isMounted, setIsMounted] = useState<Boolean>(false);
+  const [showDeets, setShowDeets] = useState<Boolean>(true);
 
   useEffect(() => {
     //check we are on the clientside
@@ -93,15 +98,20 @@ const Editor: FC<EditorProps> = ({ companyId }) => {
   useEffect(() => {
     const init = async () => {
       await initializeEditor();
-      setTimeout(() => {
-        //set focut to title
-      });
 
-      if (isMounted) {
-        init();
-        return () => {};
-      }
+      setTimeout(() => {
+        // _titleRef?.current?.focus()
+      }, 0);
     };
+
+    if (isMounted) {
+      init();
+
+      return () => {
+        ref.current?.destroy();
+        ref.current = undefined;
+      };
+    }
   }, [isMounted, initializeEditor]);
 
   return (
@@ -112,7 +122,19 @@ const Editor: FC<EditorProps> = ({ companyId }) => {
             placeholder="What's the tea?"
             className="w-full resize-none appearance-none overflow-hidden bg-transparent text-5xl font-bold focus:outline-none"
           />
-          <div id="editor" className="min-h-[500px]" />
+          <div
+            id="editor"
+            className={` ${showDeets ? "" : "hidden"}`}
+          />
+          <Button
+            className=" hover:cursor-pointer"
+            onClick={(e) => {
+              e.preventDefault();
+              setShowDeets(!showDeets);
+            }}
+          >
+            Got the deets?
+          </Button>
         </div>
       </form>
     </div>
