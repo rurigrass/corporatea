@@ -31,7 +31,8 @@ const Editor: FC<EditorProps> = ({ companyId }) => {
 
   const ref = useRef<EditorJS>();
   const [isMounted, setIsMounted] = useState<Boolean>(false);
-  const [showDeets, setShowDeets] = useState<Boolean>(true);
+  const [showDeets, setShowDeets] = useState<Boolean>(false);
+  const _spillRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     //check we are on the clientside
@@ -54,6 +55,7 @@ const Editor: FC<EditorProps> = ({ companyId }) => {
     if (!ref.current) {
       const editor = new EditorJS({
         holder: "editor",
+        minHeight: 10,
         onReady() {
           ref.current = editor;
         },
@@ -100,7 +102,7 @@ const Editor: FC<EditorProps> = ({ companyId }) => {
       await initializeEditor();
 
       setTimeout(() => {
-        // _titleRef?.current?.focus()
+        // _spillRef?.current?.focus()
       }, 0);
     };
 
@@ -114,29 +116,37 @@ const Editor: FC<EditorProps> = ({ companyId }) => {
     }
   }, [isMounted, initializeEditor]);
 
+  //related to the useref (to focus on title)
+  const { ref: spillRef, ...rest } = register("spill");
+
   return (
     <div className="w-full p-4 bg-zinc-50 rounded-lg border border-zinc-200">
       <form id="company-spill-form" className="w-fit" onSubmit={() => {}}>
         <div className="prose prose-stone dark:prose-invert">
           <TextareaAutosize
+            //this ref spill is related to the useref (to focus on title)
+            ref={(e) => {
+              spillRef(e);
+              // @ts-ignore
+              _spillRef.current = e;
+            }}
             placeholder="What's the tea?"
             className="w-full resize-none appearance-none overflow-hidden bg-transparent text-5xl font-bold focus:outline-none"
           />
-          <div
-            id="editor"
-            className={` ${showDeets ? "" : "hidden"}`}
-          />
-          <Button
-            className=" hover:cursor-pointer"
-            onClick={(e) => {
-              e.preventDefault();
-              setShowDeets(!showDeets);
-            }}
-          >
-            Got the deets?
-          </Button>
+          <div id="editor" className={` ${showDeets ? "" : "hidden"}`} />
         </div>
       </form>
+      <div className="flex justify-end">
+        <Button
+          className=" hover:cursor-pointer"
+          onClick={(e) => {
+            e.preventDefault();
+            setShowDeets(!showDeets);
+          }}
+        >
+          Got the deets?
+        </Button>
+      </div>
     </div>
   );
 };
