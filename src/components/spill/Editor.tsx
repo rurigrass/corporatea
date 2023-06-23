@@ -12,6 +12,7 @@ import { toast } from "@/hooks/use-toast";
 import { Spill } from "@prisma/client";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
+import { usePathname, useRouter } from "next/navigation";
 
 type FormData = z.infer<typeof SpillValidator>;
 
@@ -37,6 +38,8 @@ const Editor: FC<EditorProps> = ({ companyId }) => {
   const [isMounted, setIsMounted] = useState<Boolean>(false);
   const [showDeets, setShowDeets] = useState<Boolean>(false);
   const _spillRef = useRef<HTMLTextAreaElement>(null);
+  const pathname = usePathname();
+  const router = useRouter();
 
   const initializeEditor = useCallback(async () => {
     const EditorJS = (await import("@editorjs/editorjs")).default;
@@ -133,7 +136,7 @@ const Editor: FC<EditorProps> = ({ companyId }) => {
     }
   }, [isMounted, initializeEditor]);
 
-  const {} = useMutation({
+  const { mutate: createPost } = useMutation({
     mutationFn: async ({ spill, deets, companyId }: SpillCreationRequest) => {
       const payload: SpillCreationRequest = {
         spill,
@@ -150,6 +153,16 @@ const Editor: FC<EditorProps> = ({ companyId }) => {
         variant: "destructive",
       });
     },
+    onSuccess: () => {
+      // send user to their post
+      const newPathname = pathname.split("/").slice(0, -1).join("/");
+      router.push(newPathname);
+      router.refresh();
+      return toast({
+        title: "Success!",
+        description: "Your post has been published",
+      });
+    },
   });
 
   async function onSubmit(data: SpillCreationRequest) {
@@ -160,6 +173,8 @@ const Editor: FC<EditorProps> = ({ companyId }) => {
       deets: blocks,
       companyId,
     };
+
+    createPost(payload);
   }
 
   if (!isMounted) {
@@ -174,7 +189,7 @@ const Editor: FC<EditorProps> = ({ companyId }) => {
       <form
         id="company-spill-form"
         className="w-fit"
-        onSubmit={handleSubmit((e) => {})}
+        onSubmit={handleSubmit(onSubmit)}
       >
         <div className="prose prose-stone dark:prose-invert">
           <TextareaAutosize
