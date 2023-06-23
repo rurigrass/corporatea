@@ -8,6 +8,10 @@ import EditorJS from "@editorjs/editorjs";
 import { uploadFiles } from "@/lib/uploadthing";
 import { z } from "zod";
 import { Button } from "../ui/Button";
+import { toast } from "@/hooks/use-toast";
+import { Spill } from "@prisma/client";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
 
 type FormData = z.infer<typeof SpillValidator>;
 
@@ -33,13 +37,6 @@ const Editor: FC<EditorProps> = ({ companyId }) => {
   const [isMounted, setIsMounted] = useState<Boolean>(false);
   const [showDeets, setShowDeets] = useState<Boolean>(false);
   const _spillRef = useRef<HTMLTextAreaElement>(null);
-
-  useEffect(() => {
-    //check we are on the clientside
-    if (typeof window !== undefined) {
-      setIsMounted(true);
-    }
-  }, []);
 
   const initializeEditor = useCallback(async () => {
     const EditorJS = (await import("@editorjs/editorjs")).default;
@@ -98,11 +95,31 @@ const Editor: FC<EditorProps> = ({ companyId }) => {
   }, []);
 
   useEffect(() => {
+    //check we are on the clientside
+    if (typeof window !== undefined) {
+      setIsMounted(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (Object.keys(errors).length) {
+      for (const [_key, value] of Object.entries(errors)) {
+        toast({
+          title: "Something went wrong",
+          description: (value as { message: string }).message,
+          variant: "destructive",
+        });
+      }
+    }
+  }, [errors]);
+
+  useEffect(() => {
     const init = async () => {
       await initializeEditor();
 
       setTimeout(() => {
-        // _spillRef?.current?.focus()
+        // set focus to spill
+        _spillRef?.current?.focus();
       }, 0);
     };
 
@@ -116,12 +133,49 @@ const Editor: FC<EditorProps> = ({ companyId }) => {
     }
   }, [isMounted, initializeEditor]);
 
+  const {} = useMutation({
+    mutationFn: async ({ spill, deets, companyId }: SpillCreationRequest) => {
+      const payload: SpillCreationRequest = {
+        spill,
+        deets,
+        companyId,
+      };
+      const { data } = await axios.post("/api/company/spill/create", payload);
+      return data;
+    },
+    onError: () => {
+      return toast({
+        title: "Something went wrong",
+        description: "This Spill was not published please try again later",
+        variant: "destructive",
+      });
+    },
+  });
+
+  async function onSubmit(data: SpillCreationRequest) {
+    const blocks = await ref.current?.save();
+
+    const payload: SpillCreationRequest = {
+      spill: data.spill,
+      deets: blocks,
+      companyId,
+    };
+  }
+
+  if (!isMounted) {
+    return null;
+  }
+
   //related to the useref (to focus on title)
   const { ref: spillRef, ...rest } = register("spill");
 
   return (
     <div className="w-full p-4 bg-zinc-50 rounded-lg border border-zinc-200">
-      <form id="company-spill-form" className="w-fit" onSubmit={() => {}}>
+      <form
+        id="company-spill-form"
+        className="w-fit"
+        onSubmit={handleSubmit((e) => {})}
+      >
         <div className="prose prose-stone dark:prose-invert">
           <TextareaAutosize
             //this ref spill is related to the useref (to focus on title)
@@ -130,6 +184,7 @@ const Editor: FC<EditorProps> = ({ companyId }) => {
               // @ts-ignore
               _spillRef.current = e;
             }}
+            {...rest}
             placeholder="What's the tea?"
             className="w-full resize-none appearance-none overflow-hidden bg-transparent text-5xl font-bold focus:outline-none"
           />
