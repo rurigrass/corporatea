@@ -36,13 +36,13 @@ const MiniCreateSpill: FC<MiniCreateSpillProps> = ({ session }) => {
         />
         <Button
           variant="ghost"
-          onClick={() => router.push(pathname + "/submit")}
+          onClick={() => router.push(pathname + "/spill")}
         >
           <ImageIcon />
         </Button>
         <Button
           variant="ghost"
-          onClick={() => router.push(pathname + "/submit")}
+          onClick={() => router.push(pathname + "/spill")}
         >
           <Link2 className="text-zinc-600" />
         </Button>
