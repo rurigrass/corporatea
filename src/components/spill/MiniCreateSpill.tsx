@@ -36,7 +36,7 @@ const MiniCreateSpill: FC<MiniCreateSpillProps> = ({ session }) => {
         />
         <Button
           variant="ghost"
-          onClick={() => router.push(pathname + "/")}
+          onClick={() => router.push(pathname + "/spill")}
         >
           <ImageIcon />
         </Button>
