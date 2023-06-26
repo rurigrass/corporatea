@@ -64,11 +64,22 @@ const SpillFeed: FC<SpillFeedProps> = ({ initialSpills, companyName }) => {
         if (index === spills.length - 1) {
           return (
             <li key={spill.id} ref={ref}>
-              <Spill />
+              <Spill
+                companyName={spill.company.name}
+                spill={spill}
+                commentAmount={spill.comments.length}
+              />
             </li>
           );
         } else {
-          return <Spill />;
+          return (
+            <Spill
+              key={spill.id}
+              companyName={spill.company.name}
+              spill={spill}
+              commentAmount={spill.comments.length}
+            />
+          );
         }
       })}
     </ul>
