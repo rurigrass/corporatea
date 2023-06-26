@@ -1,4 +1,5 @@
 import MiniCreateSpill from "@/components/spill/MiniCreateSpill";
+import SpillFeed from "@/components/spill/SpillFeed";
 import { INFINITE_SCROLLING_PAGINATION_RESULTS } from "@/config";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
@@ -40,6 +41,7 @@ const page = async ({ params }: PageProps) => {
       {company.id}
       <MiniCreateSpill session={session} />
       {/* TODO: Show spills in user feed */}
+      <SpillFeed initialSpills={company.spills} companyName={company.name} />
     </>
   );
 };
