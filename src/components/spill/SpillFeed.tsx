@@ -68,6 +68,8 @@ const SpillFeed: FC<SpillFeedProps> = ({ initialSpills, companyName }) => {
                 companyName={spill.company.name}
                 spill={spill}
                 commentAmount={spill.comments.length}
+                currentVote={currentVote}
+                votesAmount={votesAmount}
               />
             </li>
           );
@@ -78,6 +80,8 @@ const SpillFeed: FC<SpillFeedProps> = ({ initialSpills, companyName }) => {
               companyName={spill.company.name}
               spill={spill}
               commentAmount={spill.comments.length}
+              currentVote={currentVote}
+              votesAmount={votesAmount}
             />
           );
         }

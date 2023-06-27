@@ -4,6 +4,9 @@ import { MessageSquare } from "lucide-react";
 import Link from "next/link";
 import { FC, useRef } from "react";
 import EditorOutput from "./EditorOutput";
+import SpillVoteClient from "../spill-vote/SpillVoteClient";
+
+type PartialVote = Pick<Vote, "type">;
 
 interface SpillProps {
   companyName: string;
@@ -11,16 +14,29 @@ interface SpillProps {
     author: User;
     votes: Vote[];
   };
-  commentAmount: number
+  commentAmount: number;
+  votesAmount: number;
+  currentVote?: PartialVote;
 }
 
-const Spill: FC<SpillProps> = ({ companyName, spill, commentAmount }) => {
+const Spill: FC<SpillProps> = ({
+  companyName,
+  spill,
+  commentAmount,
+  votesAmount,
+  currentVote,
+}) => {
   const sRef = useRef<HTMLDivElement>(null);
 
   return (
     <div className="rounded-md bg-white shadow">
       <div className="px-6 py-4 flex justify-between">
         {/* TODO: SpillVotes */}
+        <SpillVoteClient
+          spillId={spill.id}
+          initialVote={currentVote?.type}
+          initialVotesAmount={votesAmount}
+        />
 
         <div className="w-0 flex-1">
           <div className="max-h-40 mt-1 text-xs text-gray-500">
@@ -47,7 +63,7 @@ const Spill: FC<SpillProps> = ({ companyName, spill, commentAmount }) => {
             className="relative text-sm max-h-40 w-full overflow-clip"
             ref={sRef}
           >
-            <EditorOutput content={spill.deets}/>
+            <EditorOutput content={spill.deets} />
             {sRef.current?.clientHeight === 160 ? (
               <div className="absolute bottom-0 left-0 h-24 w-full bg-gradient-to-t from-white to-transparent" />
             ) : null}
@@ -60,7 +76,7 @@ const Spill: FC<SpillProps> = ({ companyName, spill, commentAmount }) => {
           href={`/company/${companyName}/spill/${spill.id}`}
           className="w-fit flex items-center gap-2"
         >
-          <MessageSquare className="h-4 w-4"/> {commentAmount} comments
+          <MessageSquare className="h-4 w-4" /> {commentAmount} comments
         </a>
       </div>
     </div>
