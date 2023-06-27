@@ -56,6 +56,7 @@ const SpillFeed: FC<SpillFeedProps> = ({ initialSpills, companyName }) => {
           if (vote.type === "DOWN") return acc - 1;
           return acc;
         }, 0);
+        
         //See if user has voted for this spill
         const currentVote = spill.votes.find(
           (vote) => vote.userId === session?.user.id
