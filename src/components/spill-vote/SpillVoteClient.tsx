@@ -6,6 +6,9 @@ import { FC, useEffect, useState } from "react";
 import { Button } from "../ui/Button";
 import { ArrowBigDown, ArrowBigUp } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import { SpillVoteRequest } from "@/lib/validators/vote";
 
 interface SpillVoteClientProps {
   spillId: string;
@@ -27,6 +30,17 @@ const SpillVoteClient: FC<SpillVoteClientProps> = ({
   useEffect(() => {
     setCurrentVote(initialVote);
   }, [initialVote]);
+
+  const {} = useMutation({
+    mutationFn: async (voteType: VoteType) => {
+        const payload: SpillVoteRequest = {
+            spillId,
+            voteType
+        }
+        await axios.patch(`/api/company/spill/vote`, payload)
+        // return data as 
+    }
+  })
 
   return (
     <div className="flex flex-col gap-0 pr-6 w-20 lpb-0">

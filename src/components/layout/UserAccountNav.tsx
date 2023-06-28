@@ -48,7 +48,7 @@ const UserAccountNav: FC<UserAccountNavProps> = ({ user }) => {
           </DropdownMenuItem>
           <DropdownMenuItem className="hover:cursor-pointer">
             <Icons.tea className="mr-2 h-4 w-4" />
-            <span>Drop Tea</span>
+            <span>Spill Tea</span>
           </DropdownMenuItem>
           <DropdownMenuItem className="hover:cursor-pointer">
             <Icons.settings className="mr-2 h-4 w-4" />
