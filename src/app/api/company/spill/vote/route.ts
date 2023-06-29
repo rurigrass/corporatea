@@ -44,6 +44,7 @@ export async function PATCH(req: Request) {
       },
     });
 
+    //if existing vote here is the code to delete or change the vote and save to cache
     if (existingVote) {
       //if clicked, unclick it (delete)
       if (existingVote.type === voteType) {
@@ -92,6 +93,8 @@ export async function PATCH(req: Request) {
       }
       return new Response("OK");
     }
+
+    //if no existing vote adds the vote
     await db.vote.create({
       data: {
         type: voteType,
