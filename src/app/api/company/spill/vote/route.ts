@@ -1,8 +1,9 @@
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { SpillVoteValidator } from "@/lib/validators/vote";
+import { CachedSpill } from "@/types/redits";
 
-const CACHE_AFTER_UPVOTES = 1
+const CACHE_AFTER_UPVOTES = 1;
 
 export async function PATCH(req: Request) {
   try {
@@ -74,8 +75,16 @@ export async function PATCH(req: Request) {
         if (vote.type === "DOWN") return acc - 1;
         return acc;
       }, 0);
-      if(votesAmount>=CACHE_AFTER_UPVOTES) {
-        
+
+      if (votesAmount >= CACHE_AFTER_UPVOTES) {
+        const cachePayload: CachedSpill = {
+          id: spill.id,
+          spill: spill.spill,
+          authorUsername: spill.author.username ?? "",
+          content: JSON.stringify(spill.deets),
+          currentVote: voteType,
+          createdAt: spill.createdAt
+        };
       }
     }
   } catch (error) {}
