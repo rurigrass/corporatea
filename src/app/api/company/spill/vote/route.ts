@@ -1,5 +1,6 @@
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { redis } from "@/lib/redis";
 import { SpillVoteValidator } from "@/lib/validators/vote";
 import { CachedSpill } from "@/types/redits";
 
@@ -83,9 +84,41 @@ export async function PATCH(req: Request) {
           authorUsername: spill.author.username ?? "",
           content: JSON.stringify(spill.deets),
           currentVote: voteType,
-          createdAt: spill.createdAt
+          createdAt: spill.createdAt,
         };
+
+        //stores it in the cache / serveless upstash+redis
+        await redis.hset(`spill:${spillId}`, cachePayload);
       }
+      return new Response("OK");
     }
+    await db.vote.create({
+      data: {
+        type: voteType,
+        userId: session.user.id,
+        spillId,
+      },
+    });
+
+    //THIS IS PASTED FROM ABOVE
+    const votesAmount = spill.votes.reduce((acc, vote) => {
+      if (vote.type === "UP") return acc + 1;
+      if (vote.type === "DOWN") return acc - 1;
+      return acc;
+    }, 0);
+    if (votesAmount >= CACHE_AFTER_UPVOTES) {
+      const cachePayload: CachedSpill = {
+        id: spill.id,
+        spill: spill.spill,
+        authorUsername: spill.author.username ?? "",
+        content: JSON.stringify(spill.deets),
+        currentVote: voteType,
+        createdAt: spill.createdAt,
+      };
+      //stores it in the cache / serveless upstash+redis
+      await redis.hset(`spill:${spillId}`, cachePayload);
+    }
+
+    return new Response("OK");
   } catch (error) {}
 }
