@@ -16,7 +16,7 @@ export async function PATCH(req: Request) {
     }
 
     //gets the body from req
-    const body = req.json();
+    const body = await req.json();
 
     //Type Safe Validation - the spillID and whether its up or down
     const { spillId, voteType } = SpillVoteValidator.parse(body);

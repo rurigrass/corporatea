@@ -31,7 +31,7 @@ const Spill: FC<SpillProps> = ({
   return (
     <div className="rounded-md bg-white shadow">
       <div className="px-6 py-4 flex justify-between">
-        {/* TODO: SpillVotes */}
+        {/* This is the up and down voting button */}
         <SpillVoteClient
           spillId={spill.id}
           initialVote={currentVote?.type}
