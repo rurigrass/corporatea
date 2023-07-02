@@ -45,7 +45,7 @@ const SpillFeed: FC<SpillFeedProps> = ({ initialSpills, companyName }) => {
     }
   );
 
-  // ?? only returns if previous value is null or undefined
+  // ?? operator is a logical operator that returns its right-hand side operand when its left-hand side operand is null or undefined
   const spills = data?.pages.flatMap((page) => page) ?? initialSpills;
 
   return (
@@ -56,7 +56,7 @@ const SpillFeed: FC<SpillFeedProps> = ({ initialSpills, companyName }) => {
           if (vote.type === "DOWN") return acc - 1;
           return acc;
         }, 0);
-        
+
         //See if user has voted for this spill
         const currentVote = spill.votes.find(
           (vote) => vote.userId === session?.user.id
