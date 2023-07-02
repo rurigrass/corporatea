@@ -67,6 +67,7 @@ const SpillVoteClient: FC<SpillVoteClientProps> = ({
     // these below are gonna change the values on the dom
     onMutate: (type: VoteType) => {
       if (currentVote === type) {
+        //these basically cancel out the currentvote (previous vote)
         setCurrentVote(undefined);
         if (type === "UP") setVotesAmount((prev) => prev - 1);
         else if (type === "DOWN") setVotesAmount((prev) => prev + 1);
