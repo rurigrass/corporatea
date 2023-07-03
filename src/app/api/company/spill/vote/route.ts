@@ -2,7 +2,7 @@ import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { redis } from "@/lib/redis";
 import { SpillVoteValidator } from "@/lib/validators/vote";
-import { CachedSpill } from "@/types/redits";
+import { CachedSpill } from "@/types/redis";
 import { z } from "zod";
 
 const CACHE_AFTER_UPVOTES = 1;
