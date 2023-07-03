@@ -70,8 +70,8 @@ model Company {
 
   spills Spill[]
 
-  creatorId   String?
   Creator     User?          @relation("CreatedBy", fields: [creatorId], references: [id])
+  creatorId   String?
   followers Follower[]
 
   @@index([name])

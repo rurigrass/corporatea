@@ -7,7 +7,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { INFINITE_SCROLLING_PAGINATION_RESULTS } from "@/config";
 import axios from "axios";
 import { useSession } from "next-auth/react";
-import Spill from "./Spill";
+import Spill from "../spill/Spill";
 
 interface SpillFeedProps {
   //   spills: SpillProps[]
@@ -52,7 +52,7 @@ const SpillFeed: FC<SpillFeedProps> = ({ initialSpills, companyName }) => {
   }, [entry, fetchNextPage]);
 
   // ?? operator is a logical operator that returns its right-hand side operand when its left-hand side operand is null or undefined
-  const spills = data?.pages.flatMap((page) => page) ?? initialSpills;
+  const spills = data?.pages.flatMap((page) => page) ?? initialSpills;  
 
   return (
     <ul className="flex flex-col col-span-2 space-y-6">

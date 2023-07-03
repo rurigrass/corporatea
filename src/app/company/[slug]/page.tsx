@@ -1,5 +1,5 @@
 import MiniCreateSpill from "@/components/spill/MiniCreateSpill";
-import SpillFeed from "@/components/spill/SpillFeed";
+import SpillFeed from "@/components/spills/SpillFeed";
 import { INFINITE_SCROLLING_PAGINATION_RESULTS } from "@/config";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
