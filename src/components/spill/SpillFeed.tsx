@@ -1,7 +1,7 @@
 "use client";
 
 import { ExtendedSpill } from "@/types/db";
-import { FC, useRef } from "react";
+import { FC, useEffect, useRef } from "react";
 import { useIntersection } from "@mantine/hooks";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { INFINITE_SCROLLING_PAGINATION_RESULTS } from "@/config";
@@ -44,6 +44,12 @@ const SpillFeed: FC<SpillFeedProps> = ({ initialSpills, companyName }) => {
       initialData: { pages: [initialSpills], pageParams: [1] },
     }
   );
+
+  useEffect(() => {
+    if (entry?.isIntersecting) {
+      fetchNextPage();
+    }
+  }, [entry, fetchNextPage]);
 
   // ?? operator is a logical operator that returns its right-hand side operand when its left-hand side operand is null or undefined
   const spills = data?.pages.flatMap((page) => page) ?? initialSpills;

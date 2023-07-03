@@ -27,10 +27,13 @@ const page = async ({ params }: PageProps) => {
           comments: true,
           company: true,
         },
+        orderBy: {
+          createdAt: "desc",
+        },
+        // this adds a limit: (for infinate scroll)
+        take: INFINITE_SCROLLING_PAGINATION_RESULTS,
       },
     },
-    // this adds a limit: (for infinate scroll)
-    take: INFINITE_SCROLLING_PAGINATION_RESULTS,
   });
 
   if (!company) return notFound();
