@@ -1,7 +1,9 @@
 import SpillVoteServer from "@/components/spill-vote/SpillVoteServer";
+import EditorOutput from "@/components/spill/EditorOutput";
 import { buttonVariants } from "@/components/ui/Button";
 import { db } from "@/lib/db";
 import { redis } from "@/lib/redis";
+import { formatTimeToNow } from "@/lib/utils";
 import { CachedSpill } from "@/types/redis";
 import { Spill, User, Vote } from "@prisma/client";
 import { ArrowBigDown, ArrowBigUp, Loader2 } from "lucide-react";
@@ -64,6 +66,20 @@ const page = async ({ params }: pageProps) => {
             }}
           />
         </Suspense>
+
+        <div className="sm:w-0 w-full flex-1 bg-white p-4 rounded-sm">
+          <p className="max-h-40 mt-1 truncate text-xs text-gray-500">
+            Tea spilled by{" "}
+            {spill?.author.username ?? cachedSpill.authorUsername}{" "}
+            {formatTimeToNow(
+              new Date(spill?.createdAt ?? cachedSpill.createdAt)
+            )}
+          </p>
+          <h1 className="text-xl font-semibold py-2 leading-6 text-gray-900">
+            {spill?.spill ?? cachedSpill.spill}
+          </h1>
+          <EditorOutput content={spill?.deets ?? cachedSpill.content} />
+        </div>
       </div>
     </div>
   );
