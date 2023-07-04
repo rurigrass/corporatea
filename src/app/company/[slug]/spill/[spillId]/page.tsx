@@ -1,3 +1,4 @@
+import CommentsSection from "@/components/comments/CommentsSection";
 import SpillVoteServer from "@/components/spill-vote/SpillVoteServer";
 import EditorOutput from "@/components/spill/EditorOutput";
 import { buttonVariants } from "@/components/ui/Button";
@@ -45,8 +46,6 @@ const page = async ({ params }: pageProps) => {
   //404
   if (!spill && !cachedSpill) return notFound();
 
-  console.log(spill);
-
   return (
     <div>
       <div className="h-full flex flex-col sm:flex-row items-center sm:items-start justify-between">
@@ -79,6 +78,15 @@ const page = async ({ params }: pageProps) => {
             {spill?.spill ?? cachedSpill.spill}
           </h1>
           <EditorOutput content={spill?.deets ?? cachedSpill.content} />
+
+          <Suspense
+            fallback={
+              <Loader2 className="h-5 w-5 animate-spin text-zinc-500" />
+            }
+          >
+            {/* @ts-expect-error server component */}
+            <CommentsSection spillId={spill?.id ?? cachedSpill.id} />
+          </Suspense>
         </div>
       </div>
     </div>

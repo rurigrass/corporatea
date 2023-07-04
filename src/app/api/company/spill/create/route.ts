@@ -12,7 +12,7 @@ export async function POST(req: Request) {
 
     //converts the request to json
     const body = await req.json();
-    //validate body
+    //validate body (payload)
     const { companyId, spill, deets } = SpillValidator.parse(body);
 
     //check if company is already followed
