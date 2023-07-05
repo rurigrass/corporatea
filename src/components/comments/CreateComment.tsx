@@ -12,10 +12,11 @@ import { useRouter } from "next/navigation";
 
 interface CreateCommentProps {
   spillId: string;
-  replyToId?: string
+  replyToId?: string;
 }
 
 const CreateComment: FC<CreateCommentProps> = ({ spillId, replyToId }) => {
+  //replyToId should always be undefined here i think.
   const { loginToast } = useCustomToast();
   const [input, setInput] = useState<string>("");
   const router = useRouter();
@@ -64,7 +65,11 @@ const CreateComment: FC<CreateCommentProps> = ({ spillId, replyToId }) => {
           placeholder="Something to add?"
         />
         <div className="mt-2 flex justify-end">
-          <Button isLoading={isLoading} disabled={input.length === 0} onClick={()=> comment({spillId, text: input, replyToId})}>
+          <Button
+            isLoading={isLoading}
+            disabled={input.length === 0}
+            onClick={() => comment({ spillId, text: input, replyToId })}
+          >
             Post
           </Button>
         </div>
