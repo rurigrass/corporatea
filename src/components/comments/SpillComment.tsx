@@ -39,9 +39,6 @@ const SpillComment: FC<SpillCommentProps> = ({
   //this ref will close the comment input when clicked outside of it
   const commentRef = useRef<HTMLDivElement>(null);
 
-  console.log("POOOOPP ", comment.replyToId);
-  
-
   const { mutate: replyToComment, isLoading } = useMutation({
     mutationFn: async ({ spillId, text, replyToId }: CommentRequest) => {
       const payload: CommentRequest = {
@@ -51,6 +48,10 @@ const SpillComment: FC<SpillCommentProps> = ({
       };
       const { data } = await axios.patch(`/api/company/spill/comment`, payload);
       return data;
+    },
+    onSuccess: () => {
+      router.refresh();
+      setInput("");
     },
   });
 
@@ -82,7 +83,6 @@ const SpillComment: FC<SpillCommentProps> = ({
           initialVotesAmount={votesAmount}
           initialVote={currentVote}
         />
-
         <Button
           onClick={() => {
             if (!session) return router.push("/sign-in");
@@ -94,37 +94,45 @@ const SpillComment: FC<SpillCommentProps> = ({
           <MessageSquare className="h-4 w-4 mr-1.5" />
           Reply
         </Button>
-      {isReplying ? (
-        <div className="grid w-full gap-1.5">
-          {/* <Label htmlFor="comment">Your comment</Label> */}
-          <div className="mt-2">
-            <Textarea
-              id="comment"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              rows={1}
-              placeholder="Something to add?"
-            />
-            <div className="mt-2 flex justify-end">
-              <Button
-                isLoading={isLoading}
-                disabled={input.length === 0}
-                onClick={() => {
-                  if (!input) return;
-                  replyToComment({
-                    spillId,
-                    text: input,
-                    // replyToId id will be populated by the comment.id which is the topLevelComment.
-                    replyToId: comment.replyToId ?? comment.id
-                  });
-                }}
-              >
-                Post
-              </Button>
+        {isReplying ? (
+          <div className="grid w-full gap-1.5">
+            {/* <Label htmlFor="comment">Your comment</Label> */}
+            <div className="mt-2">
+              <Textarea
+                id="comment"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                rows={1}
+                placeholder="Something to add?"
+              />
+              <div className="mt-2 flex justify-end gap-2">
+                {/* tabindex dictates what happens when you press tab */}
+                <Button
+                  tabIndex={-1}
+                  variant="subtle"
+                  onClick={() => setIsReplying(false)}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  isLoading={isLoading}
+                  disabled={input.length === 0}
+                  onClick={() => {
+                    if (!input) return;
+                    replyToComment({
+                      spillId,
+                      text: input,
+                      // replyToId id will be populated by the comment.id which is the topLevelComment.
+                      replyToId: comment.replyToId ?? comment.id,
+                    });
+                  }}
+                >
+                  Post
+                </Button>
+              </div>
             </div>
           </div>
-        </div>
-      ) : null}
+        ) : null}
       </div>
     </div>
   );

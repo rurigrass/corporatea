@@ -29,8 +29,6 @@ const CommentsSection = async ({ spillId }: CommentsSectionProps) => {
     },
   });
 
-  console.log("COMMENTS", comments);
-
   return (
     <div className="flex flex-col gap-y-4 mt-4">
       <hr className="w-full h-px my-6" />
@@ -64,6 +62,12 @@ const CommentsSection = async ({ spillId }: CommentsSectionProps) => {
                     votesAmount={topLevelCommentVotesAmount}
                   />
                 </div>
+                {topLevelComment.replies
+                  .sort((a, b) => b.votes.length - a.votes.length)
+                  .map((reply) => {
+                    
+                    return <div>{reply.text}</div>;
+                  })}
               </div>
             );
           })}
