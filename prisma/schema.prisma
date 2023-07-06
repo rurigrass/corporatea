@@ -44,12 +44,12 @@ model Session {
 }
 
 model User {
-  id               String         @id @default(cuid())
+  id               String     @id @default(cuid())
   name             String?
-  email            String?        @unique
+  email            String?    @unique
   emailVerified    DateTime?
-  createdCompanies Company[]      @relation("CreatedBy")
-  followers    Follower[]
+  createdCompanies Company[]  @relation("CreatedBy")
+  followers        Follower[]
   votes            Vote[]
 
   username String? @unique
@@ -70,8 +70,8 @@ model Company {
 
   spills Spill[]
 
-  Creator     User?          @relation("CreatedBy", fields: [creatorId], references: [id])
-  creatorId   String?
+  Creator   User?      @relation("CreatedBy", fields: [creatorId], references: [id])
+  creatorId String?
   followers Follower[]
 
   @@index([name])
@@ -89,7 +89,7 @@ model Follower {
 model Spill {
   id        String   @id @default(cuid())
   spill     String
-  deets   Json?
+  deets     Json?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

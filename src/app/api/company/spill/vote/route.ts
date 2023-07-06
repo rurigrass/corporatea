@@ -57,8 +57,30 @@ export async function PATCH(req: Request) {
             },
           },
         });
+
+        //if interactivity is too high we should cache it / recount the votes
+        const votesAmount = spill.votes.reduce((acc, vote) => {
+          if (vote.type === "UP") return acc + 1;
+          if (vote.type === "DOWN") return acc - 1;
+          return acc;
+        }, 0);
+
+        if (votesAmount >= CACHE_AFTER_UPVOTES) {
+          const cachePayload: CachedSpill = {
+            id: spill.id,
+            spill: spill.spill,
+            authorUsername: spill.author.username ?? "",
+            content: JSON.stringify(spill.deets),
+            currentVote: voteType,
+            createdAt: spill.createdAt,
+          };
+
+          //stores it in the cache / serveless upstash+redis
+          await redis.hset(`spill:${spillId}`, cachePayload);
+        }
         return new Response("OK");
       }
+
       // if clicked is different from what has already been clicked
       await db.vote.update({
         where: {
@@ -72,7 +94,7 @@ export async function PATCH(req: Request) {
         },
       });
 
-      //if interactivity is too high we should cache it / recount the votes
+      //THIS IS PASTED FROM ABOVE
       const votesAmount = spill.votes.reduce((acc, vote) => {
         if (vote.type === "UP") return acc + 1;
         if (vote.type === "DOWN") return acc - 1;
@@ -88,10 +110,10 @@ export async function PATCH(req: Request) {
           currentVote: voteType,
           createdAt: spill.createdAt,
         };
-
         //stores it in the cache / serveless upstash+redis
         await redis.hset(`spill:${spillId}`, cachePayload);
       }
+
       return new Response("OK");
     }
 
@@ -104,12 +126,13 @@ export async function PATCH(req: Request) {
       },
     });
 
-    //THIS IS PASTED FROM ABOVE
+    //THIS IS PASTED FROM ABOVE - recount the votes
     const votesAmount = spill.votes.reduce((acc, vote) => {
       if (vote.type === "UP") return acc + 1;
       if (vote.type === "DOWN") return acc - 1;
       return acc;
     }, 0);
+
     if (votesAmount >= CACHE_AFTER_UPVOTES) {
       const cachePayload: CachedSpill = {
         id: spill.id,
@@ -124,6 +147,7 @@ export async function PATCH(req: Request) {
     }
 
     return new Response("OK");
+    
   } catch (error) {
     if (error instanceof z.ZodError) {
       return new Response("Invalid request data passed", { status: 422 });
