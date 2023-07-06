@@ -1,7 +1,7 @@
 import { Spill, Vote, VoteType } from "@prisma/client";
-import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
 import SpillVoteClient from "./SpillVoteClient";
+import { getAuthSession } from "@/lib/auth";
 
 interface SpillVoteServerProps {
   spillId: string;
@@ -23,9 +23,9 @@ const SpillVoteServer = async ({
   initialVote,
   getData,
 }: SpillVoteServerProps) => {
-  const session = await getServerSession();
+  const session = await getAuthSession();
   let _votesAmount: number = 0;
-  let _currentVote: Vote["type"] | null | undefined = undefined;
+  let _currentVote: Vote["type"] | null | undefined = undefined;  
 
   if (getData) {
     // fetch data in component
@@ -38,6 +38,9 @@ const SpillVoteServer = async ({
       return acc;
     }, 0);
 
+    console.log("SPILL ", spill.votes);
+    console.log("USER ", session?.user?.id);
+    
     _currentVote = spill.votes.find(
       (vote) => vote.userId === session?.user?.id
     )?.type;
@@ -45,6 +48,12 @@ const SpillVoteServer = async ({
     _votesAmount = initialVotesAmount!;
     _currentVote = initialVote;
   }
+
+  //need to find 'up'
+  
+  // console.log("OLD VARIABLES ", spillId, initialVotesAmount, initialVote, getData);
+  // console.log("NEW VARIABLES ", _votesAmount, _currentVote);
+  
 
   return (
     <SpillVoteClient
