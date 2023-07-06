@@ -25,9 +25,10 @@ const SpillVoteServer = async ({
 }: SpillVoteServerProps) => {
   const session = await getServerSession();
   let _votesAmount: number = 0;
-  let _currentVote: VoteType | null | undefined = undefined;
+  let _currentVote: Vote["type"] | null | undefined = undefined;
 
   if (getData) {
+    // fetch data in component
     const spill = await getData();
     if (!spill) return notFound();
 
@@ -38,7 +39,7 @@ const SpillVoteServer = async ({
     }, 0);
 
     _currentVote = spill.votes.find(
-      (vote) => vote.userId === session?.user.id
+      (vote) => vote.userId === session?.user?.id
     )?.type;
   } else {
     _votesAmount = initialVotesAmount!;
