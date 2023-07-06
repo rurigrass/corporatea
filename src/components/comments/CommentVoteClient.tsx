@@ -15,18 +15,20 @@ type PartialVote = Pick<CommentVote, "type">;
 
 interface CommentVoteClientProps {
   commentId: string;
-  initialVotesAmount: number;
-  initialVote?: PartialVote;
+  votesAmount: number;
+  currentVote?: PartialVote
 }
 
 const CommentVoteClient: FC<CommentVoteClientProps> = ({
   commentId,
-  initialVotesAmount,
-  initialVote,
+  votesAmount: _votesAmount,
+  currentVote: _currentVote,
 }) => {
   const { loginToast } = useCustomToast();
-  const [votesAmount, setVotesAmount] = useState<number>(initialVotesAmount);
-  const [currentVote, setCurrentVote] = useState(initialVote);
+  const [votesAmount, setVotesAmount] = useState<number>(_votesAmount);
+  const [currentVote, setCurrentVote] = useState<PartialVote | undefined>(
+    _currentVote
+  );
   const prevVote = usePrevious(currentVote);
 
   const { mutate: vote } = useMutation({

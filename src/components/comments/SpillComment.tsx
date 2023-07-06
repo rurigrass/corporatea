@@ -88,9 +88,9 @@ const SpillComment: FC<SpillCommentProps> = ({
 
       <div className="flex gap-2 items-center flex-wrap">
         <CommentVoteClient
-          commentId={comment.commentId || ""}
-          initialVotesAmount={votesAmount}
-          initialVote={currentVote}
+          commentId={comment.id}
+          votesAmount={votesAmount}
+          currentVote={currentVote}
         />
         <Button
           onClick={() => {
