@@ -21,7 +21,7 @@ interface pageProps {
 export const dynamic = "force-dynamic";
 export const fetchCache = "force-no-stor";
 
-const page = async ({ params }: pageProps) => {
+const Page = async ({ params }: pageProps) => {
   const { spillId } = params;
 
   //faster performance to fetch from cache
@@ -112,4 +112,4 @@ function SpillVoteShell() {
   );
 }
 
-export default page;
+export default Page;

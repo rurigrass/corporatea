@@ -12,7 +12,7 @@ export const metadata = {
 
 interface pageProps {}
 
-const page = async ({}) => {
+const Page = async ({}) => {
   const session = await getAuthSession();
 
   if (!session?.user) {
@@ -57,4 +57,4 @@ const page = async ({}) => {
   );
 };
 
-export default page;
+export default Page;

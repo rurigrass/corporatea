@@ -9,7 +9,7 @@ interface pageProps {
   };
 }
 
-const page = async ({ params }: pageProps) => {
+const Page = async ({ params }: pageProps) => {
   const { slug } = params;
   const company = await db.company.findFirst({
     where: {
@@ -44,4 +44,4 @@ const page = async ({ params }: pageProps) => {
   );
 };
 
-export default page;
+export default Page;
