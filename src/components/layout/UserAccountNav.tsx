@@ -61,6 +61,7 @@ const UserAccountNav: FC<UserAccountNavProps> = ({ user }) => {
             onSelect={(event) => {
               event.preventDefault();
               signOut({
+                // returns you to the page you were on
                 callbackUrl: `${window.location.origin}/sign-in`,
               });
             }}
