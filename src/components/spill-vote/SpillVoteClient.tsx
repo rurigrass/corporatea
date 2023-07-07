@@ -33,7 +33,6 @@ const SpillVoteClient: FC<SpillVoteClientProps> = ({
   }, [initialVote]);
 
   const { mutate: vote } = useMutation({
-
     // This will make the request
     mutationFn: async (voteType: VoteType) => {
       const payload: SpillVoteRequest = {
@@ -82,7 +81,7 @@ const SpillVoteClient: FC<SpillVoteClientProps> = ({
   });
 
   return (
-    <div className="flex flex-col gap-0 pr-6 w-20 lpb-0">
+    <div className="flex flex-row sm:flex-col gap-4 sm:gap-0 pr-6 sm:w-20 pb-4 sm:pb-0">
       <Button
         onClick={() => {
           vote("UP");

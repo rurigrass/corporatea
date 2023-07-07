@@ -16,14 +16,18 @@ import { Label } from "../ui/Label";
 import { Input } from "../ui/Input";
 import { Button } from "../ui/Button";
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
+import { toast } from "@/hooks/use-toast";
+import { useCustomToast } from "@/hooks/use-custom-toast";
+import { useRouter } from "next/navigation";
 
 interface UsernameFormProps {
   user: Pick<User, "id" | "username">;
 }
 
 const UsernameForm: FC<UsernameFormProps> = ({ user }) => {
-  const [] = useState();
+  const router = useRouter();
+  const { loginToast } = useCustomToast();
 
   const {
     handleSubmit,
@@ -36,16 +40,53 @@ const UsernameForm: FC<UsernameFormProps> = ({ user }) => {
     },
   });
 
-  const {} = useMutation({
+  const { mutate: updateUser, isLoading } = useMutation({
     mutationFn: async ({ name }: UsernameRequest) => {
       const payload: UsernameRequest = { name };
       const { data } = await axios.patch("api/settings", payload);
-      return data
+      return data;
+    },
+    onError: (err) => {
+      if (err instanceof AxiosError) {
+        if (err.response?.status === 409) {
+          return toast({
+            title: "Username already taken, please use a different username.",
+            description: "Please choose a different name for your Company.",
+            variant: "destructive",
+          });
+        }
+        if (err.response?.status === 422) {
+          return toast({
+            title: "Username is too short or too long!",
+            description:
+              "Please ensure that your Username name is between 3 and 32 characters long.",
+            variant: "destructive",
+          });
+        }
+        if (err.response?.status === 401) {
+          return loginToast();
+        }
+      }
+      toast({
+        title: "There was an error.",
+        description: "Could not update username.",
+        variant: "destructive",
+      });
+    },
+    onSuccess: () => {
+      toast({
+        description: "Your username has been updated",
+      });
+      router.refresh();
     },
   });
 
   return (
-    <form onSubmit={handleSubmit(() => {})}>
+    <form
+      onSubmit={handleSubmit((e) => {
+        updateUser(e)
+      })}
+    >
       <Card>
         <CardHeader>
           <CardTitle>Your username</CardTitle>
@@ -69,7 +110,7 @@ const UsernameForm: FC<UsernameFormProps> = ({ user }) => {
           </div>
         </CardContent>
         <CardFooter>
-          <Button>Change username</Button>
+          <Button isLoading={isLoading}>Change username</Button>
         </CardFooter>
       </Card>
     </form>
