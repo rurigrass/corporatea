@@ -1,12 +1,12 @@
 "use client";
-import { FC, useCallback, useRef, useState } from "react";
+import { FC, useCallback, useEffect, useRef, useState } from "react";
 import { Command, CommandInput, CommandItem } from "../ui/Command";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { Company, Prisma } from "@prisma/client";
 import debounce from "lodash.debounce";
 import { CommandEmpty, CommandGroup, CommandList } from "cmdk";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Users } from "lucide-react";
 import { useOnClickOutside } from "@/hooks/use-on-click-outside";
 
@@ -15,6 +15,7 @@ interface SearchBarProps {}
 const SearchBar: FC<SearchBarProps> = ({}) => {
   const router = useRouter();
   const [input, setInput] = useState<string>("");
+  const pathname = usePathname()
 
   const {
     data: queryResults,
@@ -43,10 +44,16 @@ const SearchBar: FC<SearchBarProps> = ({}) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  //close searchbar on click outside
   const commandRef = useRef<HTMLDivElement>(null);
   useOnClickOutside(commandRef, () => {
     setInput("");
   });
+
+  //close searchbar when page changes
+  useEffect(()=>{
+    setInput("")
+  },[pathname])
 
   return (
     <Command

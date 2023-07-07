@@ -10,6 +10,7 @@ import { useMutation } from "@tanstack/react-query";
 import axios, { Axios, AxiosError } from "axios";
 import { SpillVoteRequest } from "@/lib/validators/vote";
 import { toast } from "@/hooks/use-toast";
+import { usePathname, useRouter } from "next/navigation";
 
 interface SpillVoteClientProps {
   spillId: string;
@@ -80,8 +81,16 @@ const SpillVoteClient: FC<SpillVoteClientProps> = ({
     },
   });
 
+  const pathname = usePathname();
+  const pattern = /^\/company\/.+\/spill\/.+/;
+  console.log(pattern.test(pathname));
+
   return (
-    <div className="flex flex-row sm:flex-col gap-4 sm:gap-0 pr-6 sm:w-20 pb-4 sm:pb-0">
+    <div
+      className={`flex ${
+        pattern.test(pathname) ? "flex-row" : "flex-col"
+      }  sm:flex-col gap-4 sm:gap-0 pr-6 sm:w-20 pb-4 sm:pb-0`}
+    >
       <Button
         onClick={() => {
           vote("UP");
