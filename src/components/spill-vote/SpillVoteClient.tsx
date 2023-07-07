@@ -81,9 +81,9 @@ const SpillVoteClient: FC<SpillVoteClientProps> = ({
     },
   });
 
+  //this is for the arrow css
   const pathname = usePathname();
   const pattern = /^\/company\/.+\/spill\/.+/;
-  console.log(pattern.test(pathname));
 
   return (
     <div
