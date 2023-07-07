@@ -1,4 +1,3 @@
-import { FC } from "react";
 import { Icons } from "../layout/Icons";
 import Link from "next/link";
 import UserAuthForm from "./UserAuthForm";

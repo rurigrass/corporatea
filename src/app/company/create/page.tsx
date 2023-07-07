@@ -10,7 +10,7 @@ import axios, { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-const Page = ({}) => {
+const Page = () => {
   const router = useRouter();
   const [input, setInput] = useState<string>("");
   const { loginToast } = useCustomToast();

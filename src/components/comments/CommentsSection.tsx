@@ -1,6 +1,5 @@
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { FC } from "react";
 import SpillComment from "./SpillComment";
 import CreateComment from "./CreateComment";
 
