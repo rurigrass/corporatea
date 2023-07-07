@@ -13,10 +13,10 @@ export async function GET(req: Request) {
       },
     },
     include: {
-        _count: true
+      _count: true,
     },
-    take: 5
+    take: 5,
   });
 
-  return new Response 
+  return new Response(JSON.stringify(results));
 }

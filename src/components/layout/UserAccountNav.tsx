@@ -15,12 +15,13 @@ import {
 import UserAvatar from "../user/UserAvatar";
 import { Icons } from "./Icons";
 import { signOut } from "next-auth/react";
+import Link from "next/link";
 
 interface UserAccountNavProps {
   user: Pick<User, "name" | "image" | "email">;
 }
 
-const UserAccountNav: FC<UserAccountNavProps> = ({ user }) => {    
+const UserAccountNav: FC<UserAccountNavProps> = ({ user }) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
@@ -52,10 +53,11 @@ const UserAccountNav: FC<UserAccountNavProps> = ({ user }) => {
           </DropdownMenuItem>
           <DropdownMenuItem className="hover:cursor-pointer">
             <Icons.settings className="mr-2 h-4 w-4" />
-            <span>Settings</span>
+            <Link href="/settings">Settings</Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem className="hover:cursor-pointer"
+          <DropdownMenuItem
+            className="hover:cursor-pointer"
             onSelect={(event) => {
               event.preventDefault();
               signOut({
