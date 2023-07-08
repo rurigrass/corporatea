@@ -18,8 +18,8 @@ interface pageProps {
 }
 
 //hard reload everything
-export const dynamic = "force-dynamic";
-export const fetchCache = "force-no-stor";
+export const dynamic = "force-dynamic"
+export const fetchCache = "force-no-store";
 
 const Page = async ({ params }: pageProps) => {
   const { spillId } = params;
