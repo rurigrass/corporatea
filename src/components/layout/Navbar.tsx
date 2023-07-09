@@ -5,9 +5,10 @@ import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
 import UserAccountNav from "./UserAccountNav";
 import SearchBar from "./SearchBar";
+import { LogIn } from "lucide-react";
 
 const Navbar = async () => {
-  const session = await getServerSession(authOptions)
+  const session = await getServerSession(authOptions);
 
   return (
     <div className="fixed top-0 inset-x-0 h-fit bg-zinc-100 border-b border-zinc-300 z-[10] py-2">
@@ -19,13 +20,14 @@ const Navbar = async () => {
           <p className=" text-zinc-700 text-sm font-medium block">Corporatea</p>
         </Link>
         {/* Searchbar */}
-        <SearchBar/>
+        <SearchBar />
         {/* SignIn */}
         {session?.user ? (
           <UserAccountNav user={session.user} />
         ) : (
           <Link href="/sign-in" className={buttonVariants()}>
-            Sign In
+            <span className="hidden md:block md:mr-1.5">Sign In</span>
+            <LogIn />
           </Link>
         )}
       </div>
