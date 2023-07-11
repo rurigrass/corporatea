@@ -9,6 +9,8 @@ import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { UploadButton } from "@uploadthing/react";
+import { OurFileRouter } from "@/app/api/uploadthing/core";
 
 const Page = () => {
   const router = useRouter();
@@ -54,7 +56,7 @@ const Page = () => {
   });
 
   return (
-    <div className="container flex items-center h-full max-w-3xl mx-auto">
+    <div className="container flex flex-row items-center h-full max-w-3xl mx-auto">
       <div className="relative bg-white w-full h-fit p-4 rounded-lg space-y-6">
         <div className="flex justify-between items-center">
           <h1 className="text-xl font-semibold">Add a Company</h1>
@@ -63,9 +65,6 @@ const Page = () => {
 
         <div>
           <p className="text-lg font-medium">Name</p>
-          <p className="text-xs pb-2">
-            Company names including capitalization cannot be changed
-          </p>
           <div className="relative">
             <Input
               value={input}
@@ -74,6 +73,26 @@ const Page = () => {
               //   className="pl-20"
             />
           </div>
+        </div>
+
+        {/* add image */}
+        <div>
+          <p className="text-lg font-medium">Image</p>
+          {/* <p className="text-xs pb-2">
+            Company names including capitalization cannot be changed
+          </p> */}
+          <UploadButton<OurFileRouter>
+            endpoint="imageUploader"
+            onClientUploadComplete={(res) => {
+              // Do something with the response
+              console.log("Files: ", res);
+              alert("Upload Completed");
+            }}
+            onUploadError={(error: Error) => {
+              // Do something with the error.
+              alert(`ERROR! ${error.message}`);
+            }}
+          />
         </div>
 
         <div className="flex justify-end gap-4">

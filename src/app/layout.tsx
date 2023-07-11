@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import Navbar from "@/components/layout/Navbar";
 import { Toaster } from "@/components/ui/Toaster";
 import Providers from "@/components/auth/Providers";
+import "@uploadthing/react/styles.css";
 
 export const metadata = {
   title: "Corporatea",
