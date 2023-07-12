@@ -11,10 +11,17 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { UploadButton } from "@uploadthing/react";
 import { OurFileRouter } from "@/app/api/uploadthing/core";
+import Image from "next/image";
+
+type imageProps = {
+  fileUrl: string;
+  fileKey: string;
+};
 
 const Page = () => {
   const router = useRouter();
   const [input, setInput] = useState<string>("");
+  const [image, setImage] = useState<imageProps>();
   const { loginToast } = useCustomToast();
 
   const { mutate: createCompany, isLoading } = useMutation({
@@ -55,6 +62,8 @@ const Page = () => {
     },
   });
 
+  console.log(image);
+
   return (
     <div className="container flex flex-row items-center h-full max-w-3xl mx-auto">
       <div className="relative bg-white w-full h-fit p-4 rounded-lg space-y-6">
@@ -85,14 +94,25 @@ const Page = () => {
             endpoint="imageUploader"
             onClientUploadComplete={(res) => {
               // Do something with the response
-              console.log("Files: ", res);
-              alert("Upload Completed");
+              console.log("DARES ", res);
+
+              if (res) {
+                setImage(res[0]);
+                const json = JSON.stringify(res);
+                console.log("Files: ", json);
+                // alert("Upload Completed");
+              }
             }}
             onUploadError={(error: Error) => {
               // Do something with the error.
               alert(`ERROR! ${error.message}`);
             }}
           />
+          {image && (
+            <div className="relative h-32 w-32  overflow-hidden rounded-lg">
+              <Image fill src={image.fileUrl} alt={image.fileKey}></Image>
+            </div>
+          )}
         </div>
 
         <div className="flex justify-end gap-4">
