@@ -1,17 +1,20 @@
 "use client";
 
+import { OurFileRouter } from "@/app/api/uploadthing/core";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { useCustomToast } from "@/hooks/use-custom-toast";
 import { toast } from "@/hooks/use-toast";
 import { CreateCompanyPayload } from "@/lib/validators/company";
+import { ImageRequest } from "@/lib/validators/image";
 import { useMutation } from "@tanstack/react-query";
+import { UploadButton } from "@uploadthing/react";
 import axios, { AxiosError } from "axios";
+import { X } from "lucide-react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { UploadButton } from "@uploadthing/react";
-import { OurFileRouter } from "@/app/api/uploadthing/core";
-import Image from "next/image";
+import { utapi } from "uploadthing/server";
 
 type imageProps = {
   fileUrl: string;
@@ -21,7 +24,7 @@ type imageProps = {
 const Page = () => {
   const router = useRouter();
   const [input, setInput] = useState<string>("");
-  const [image, setImage] = useState<imageProps>();
+  const [image, setImage] = useState<imageProps | null>(null);
   const { loginToast } = useCustomToast();
 
   const { mutate: createCompany, isLoading } = useMutation({
@@ -62,7 +65,28 @@ const Page = () => {
     },
   });
 
-  console.log(image);
+  const { mutate: deleteImage } = useMutation({
+    mutationFn: async () => {
+      const payload: ImageRequest = {
+        fileKey: image?.fileKey,
+        fileUrl: image?.fileUrl,
+      };
+      const { data } = await axios.post("/api/company/delete-image", payload);
+      return data as string;
+    },
+    onSuccess: (data) => {
+      setImage(null);
+    },
+  });
+
+  // const deleteImage = async (imageId: string) => {
+  //   console.log("IMAGEID: ", imageId);
+
+  //   await utapi.deleteFiles(imageId);
+  //   setImage(null);
+  // };
+
+  console.log("IMAGE: ", image);
 
   return (
     <div className="container flex flex-row items-center h-full max-w-3xl mx-auto">
@@ -90,27 +114,44 @@ const Page = () => {
           {/* <p className="text-xs pb-2">
             Company names including capitalization cannot be changed
           </p> */}
-          <UploadButton<OurFileRouter>
-            endpoint="imageUploader"
-            onClientUploadComplete={(res) => {
-              // Do something with the response
-              console.log("DARES ", res);
+          {!image ? (
+            <UploadButton<OurFileRouter>
+              endpoint="imageUploader"
+              onClientUploadComplete={(res) => {
+                // Do something with the response
+                // console.log("DARES ", res);
 
-              if (res) {
-                setImage(res[0]);
-                const json = JSON.stringify(res);
-                console.log("Files: ", json);
-                // alert("Upload Completed");
-              }
-            }}
-            onUploadError={(error: Error) => {
-              // Do something with the error.
-              alert(`ERROR! ${error.message}`);
-            }}
-          />
-          {image && (
-            <div className="relative h-32 w-32  overflow-hidden rounded-lg">
-              <Image fill src={image.fileUrl} alt={image.fileKey}></Image>
+                if (res) {
+                  setImage(res[0]);
+                  const json = JSON.stringify(res);
+                  console.log("Files: ", json);
+                  // alert("Upload Completed");
+                }
+              }}
+              onUploadError={(error: Error) => {
+                // Do something with the error.
+                alert(`ERROR! ${error.message}`);
+              }}
+            />
+          ) : (
+            <div className="relative h-32 w-32 overflow-hidden rounded-lg">
+              <div className="absolute top-2 right-2 z-10">
+                <Button
+                  onClick={() => deleteImage()}
+                  className="h-6 w-6 p-0 rounded-md "
+                  variant="subtle"
+                  aria-label="close modal"
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
+              <Image
+                fill
+                className="relative"
+                src={image.fileUrl}
+                alt={image.fileKey}
+                // style={{ objectFit: "fill"}}
+              />
             </div>
           )}
         </div>
@@ -121,7 +162,7 @@ const Page = () => {
           </Button>
           <Button
             isLoading={isLoading}
-            disabled={input.length === 0}
+            disabled={input.length === 0 || !image}
             onClick={() => createCompany()}
           >
             Add Company
