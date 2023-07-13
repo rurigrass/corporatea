@@ -24,7 +24,7 @@ type imageProps = {
 const Page = () => {
   const router = useRouter();
   const [input, setInput] = useState<string>("");
-  const [image, setImage] = useState<imageProps | null>(null);
+  const [image, setImage] = useState<imageProps>({ fileUrl: "", fileKey: "" });
   const { loginToast } = useCustomToast();
 
   const { mutate: createCompany, isLoading } = useMutation({
@@ -75,18 +75,11 @@ const Page = () => {
       return data as string;
     },
     onSuccess: (data) => {
-      setImage(null);
+      setImage({ fileKey: "", fileUrl: "" });
     },
   });
 
-  // const deleteImage = async (imageId: string) => {
-  //   console.log("IMAGEID: ", imageId);
-
-  //   await utapi.deleteFiles(imageId);
-  //   setImage(null);
-  // };
-
-  console.log("IMAGE: ", image);
+  console.log(image);
 
   return (
     <div className="container flex flex-row items-center h-full max-w-3xl mx-auto">
@@ -114,7 +107,7 @@ const Page = () => {
           {/* <p className="text-xs pb-2">
             Company names including capitalization cannot be changed
           </p> */}
-          {!image ? (
+          {image.fileUrl === "" ? (
             <UploadButton<OurFileRouter>
               endpoint="imageUploader"
               onClientUploadComplete={(res) => {
@@ -162,7 +155,7 @@ const Page = () => {
           </Button>
           <Button
             isLoading={isLoading}
-            disabled={input.length === 0 || !image}
+            disabled={input.length === 0 || image.fileUrl === ""}
             onClick={() => createCompany()}
           >
             Add Company
