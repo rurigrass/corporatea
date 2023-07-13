@@ -1,18 +1,17 @@
 "use client";
-import { FC, useCallback, useRef, useState, useEffect } from "react";
-import TextareaAutosize from "react-textarea-autosize";
-import { useForm } from "react-hook-form";
-import { SpillCreationRequest, SpillValidator } from "@/lib/validators/spill";
-import { zodResolver } from "@hookform/resolvers/zod";
-import EditorJS from "@editorjs/editorjs";
-import { uploadFiles } from "@/lib/uploadthing";
-import { z } from "zod";
-import { Button } from "../ui/Button";
 import { toast } from "@/hooks/use-toast";
-import { Spill } from "@prisma/client";
+import { uploadFiles } from "@/lib/uploadthing";
+import { SpillCreationRequest, SpillValidator } from "@/lib/validators/spill";
+import EditorJS from "@editorjs/editorjs";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { usePathname, useRouter } from "next/navigation";
+import { FC, useCallback, useEffect, useRef, useState } from "react";
+import { useForm } from "react-hook-form";
+import TextareaAutosize from "react-textarea-autosize";
+import { z } from "zod";
+import { Button } from "../ui/Button";
 
 type FormData = z.infer<typeof SpillValidator>;
 

@@ -7,7 +7,7 @@ export async function POST(req: Request) {
     const body = await req.json();
     const { fileKey, fileUrl } = ImageValidator.parse(body);
 
-    console.log("DELLLEEEETEEEEE: ", fileKey, fileUrl);
+    //delete from uploadthing
     await utapi.deleteFiles(fileKey);
     return new Response("OK");
   } catch (error) {

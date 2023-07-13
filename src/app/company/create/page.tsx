@@ -79,8 +79,6 @@ const Page = () => {
     },
   });
 
-  console.log(image);
-
   return (
     <div className="container flex flex-row items-center h-full max-w-3xl mx-auto">
       <div className="relative bg-white w-full h-fit p-4 rounded-lg space-y-6">
@@ -143,7 +141,7 @@ const Page = () => {
                 className="relative"
                 src={image.fileUrl}
                 alt={image.fileKey}
-                // style={{ objectFit: "fill"}}
+                style={{ objectFit: "cover" }}
               />
             </div>
           )}
