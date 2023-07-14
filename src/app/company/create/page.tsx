@@ -14,7 +14,6 @@ import { X } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { utapi } from "uploadthing/server";
 
 type imageProps = {
   fileUrl: string;
@@ -29,7 +28,10 @@ const Page = () => {
 
   const { mutate: createCompany, isLoading } = useMutation({
     mutationFn: async () => {
-      const payload: CreateCompanyPayload = { name: input.toLowerCase() };
+      const payload: CreateCompanyPayload = {
+        name: input.toLowerCase(),
+        image,
+      };
       const { data } = await axios.post("/api/company", payload);
       return data as string;
     },
@@ -115,7 +117,7 @@ const Page = () => {
                 if (res) {
                   setImage(res[0]);
                   const json = JSON.stringify(res);
-                  console.log("Files: ", json);
+                  // console.log("Files: ", json);
                   // alert("Upload Completed");
                 }
               }}

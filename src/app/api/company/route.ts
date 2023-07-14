@@ -13,7 +13,7 @@ export async function POST(req: Request) {
     //converts the request to json
     const body = await req.json();
     // validated the json and destructures it.
-    const { name } = CompanyValidator.parse(body);
+    const { name, image } = CompanyValidator.parse(body);
 
     //check if company already exists
     const companyExists = await db.company.findFirst({
@@ -26,10 +26,13 @@ export async function POST(req: Request) {
       return new Response("Company already exists", { status: 409 });
     }
 
+    console.log("NAME: ", name, "IMAGE: ", image);
+
     //push to db
     const company = await db.company.create({
       data: {
         name,
+        image,
         creatorId: session.user.id,
       },
     });
@@ -41,11 +44,13 @@ export async function POST(req: Request) {
       },
     });
 
-    return new Response(company.name);
+    return new Response("OK");
   } catch (error) {
     if (error instanceof z.ZodError) {
       return new Response(error.message, { status: 422 });
     }
+
+    console.log(error);
 
     return new Response("Could not add company", { status: 500 });
   }
