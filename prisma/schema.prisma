@@ -67,8 +67,8 @@ model Company {
   name      String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  imageId   String
-  imageUrl  String
+  imageId   String?
+  imageUrl  String?
 
   spills Spill[]
 

@@ -30,7 +30,8 @@ const Page = () => {
     mutationFn: async () => {
       const payload: CreateCompanyPayload = {
         name: input.toLowerCase(),
-        image,
+        imageId: image.fileKey,
+        imageUrl: image.fileUrl,
       };
       const { data } = await axios.post("/api/company", payload);
       return data as string;

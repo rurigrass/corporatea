@@ -1,9 +1,9 @@
 import { z } from "zod";
-import { ImageValidator } from "./image";
 
 export const CompanyValidator = z.object({
   name: z.string().min(3).max(21),
-  image: ImageValidator,
+  imageId: z.string(),
+  imageUrl: z.string(),
 });
 
 export const CompanyFollowerValidator = z.object({

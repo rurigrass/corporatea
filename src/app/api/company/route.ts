@@ -13,7 +13,7 @@ export async function POST(req: Request) {
     //converts the request to json
     const body = await req.json();
     // validated the json and destructures it.
-    const { name, image } = CompanyValidator.parse(body);
+    const { name, imageId, imageUrl } = CompanyValidator.parse(body);
 
     //check if company already exists
     const companyExists = await db.company.findFirst({
@@ -26,13 +26,14 @@ export async function POST(req: Request) {
       return new Response("Company already exists", { status: 409 });
     }
 
-    console.log("NAME: ", name, "IMAGE: ", image);
+    console.log("FIELDSSSS   :", name, imageId, imageUrl);
 
     //push to db
     const company = await db.company.create({
       data: {
         name,
-        image,
+        imageId,
+        imageUrl,
         creatorId: session.user.id,
       },
     });
@@ -44,7 +45,7 @@ export async function POST(req: Request) {
       },
     });
 
-    return new Response("OK");
+    return new Response(name);
   } catch (error) {
     if (error instanceof z.ZodError) {
       return new Response(error.message, { status: 422 });
