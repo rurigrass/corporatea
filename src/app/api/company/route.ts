@@ -26,8 +26,6 @@ export async function POST(req: Request) {
       return new Response("Company already exists", { status: 409 });
     }
 
-    console.log("FIELDSSSS   :", name, imageId, imageUrl);
-
     //push to db
     const company = await db.company.create({
       data: {
