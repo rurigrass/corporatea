@@ -6,9 +6,8 @@ import { HomeIcon } from "lucide-react";
 import Link from "next/link";
 
 //this will stop the caching and increase performance
-export const dynamic = 'force-dynamic'
-export const fetchCache = 'force-no-store'
-
+export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store";
 
 export default async function Home() {
   const session = await getAuthSession();
