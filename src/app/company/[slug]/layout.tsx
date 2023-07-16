@@ -3,6 +3,7 @@ import { buttonVariants } from "@/components/ui/Button";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { format } from "date-fns";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ReactNode } from "react";
@@ -31,6 +32,8 @@ const layout = async ({ params, children }: layoutProps) => {
       },
     },
   });
+
+  console.log(company);
 
   const follower = !session?.user
     ? undefined
@@ -73,6 +76,18 @@ const layout = async ({ params, children }: layoutProps) => {
             </div>
 
             <dl className="divide-y divide-gray-100 px-6 py-4 text-sm leading-6 bg-white">
+              <div className="flex justify-center pb-4">
+                <div className="relative h-48 w-48 overflow-hidden rounded-lg">
+                  <Image
+                    fill
+                    className="relative"
+                    src={company.imageUrl}
+                    alt={company.creatorId}
+                    style={{ objectFit: "cover" }}
+                  />
+                </div>
+              </div>
+
               <div className="flex justify-between gap-x-4 py-3">
                 <dt className="text-gray-500">Created</dt>
                 <dd className="text-gray-700">
@@ -83,7 +98,7 @@ const layout = async ({ params, children }: layoutProps) => {
               </div>
 
               <div className="flex justify-between gap-x-4 py-3">
-                <dt className="text-gray-500">Members</dt>
+                <dt className="text-gray-500">Followers</dt>
                 <dd className="text-gray-700">
                   <div className="text-gray-900">{followerCount}</div>
                 </dd>
