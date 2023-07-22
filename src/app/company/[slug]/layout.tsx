@@ -79,13 +79,19 @@ const layout = async ({ params, children }: layoutProps) => {
               <div className="flex justify-center pb-4">
                 <div className="relative h-48 w-48 overflow-hidden rounded-lg">
                   {/* try making image non optional in schema  */}
-                  <Image
-                    fill
-                    className="relative"
-                    src={company.imageUrl}
-                    alt={company.creatorId}
-                    style={{ objectFit: "cover" }}
-                  />
+                  {company.imageUrl && company.creatorId ? (
+                    <div className="relative h-48 w-48 overflow-hidden rounded-lg">
+                      <Image
+                        fill
+                        className="relative"
+                        src={company.imageUrl}
+                        alt={company.creatorId}
+                        style={{ objectFit: "cover" }}
+                      />
+                    </div>
+                  ) : (
+                    <div>No Image Available</div>
+                  )}
                 </div>
               </div>
 
