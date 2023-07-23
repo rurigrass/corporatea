@@ -17,7 +17,10 @@ const Navbar = async () => {
         <Link href="/" className="flex gap-2 items-center">
           {/* <Icons.logo className="h-8 w-8 sm:h-6 sm:w-6" /> */}
           {/* hidden sm:block */}
-          <p className=" text-zinc-700 text-sm font-medium block">Corporatea</p>
+          <Icons.tea className="mr-2 h-4 w-4 sm:hidden" />
+          <p className=" text-zinc-700 text-sm font-medium hidden sm:block">
+            Corporatea
+          </p>
         </Link>
         {/* Searchbar */}
         <SearchBar />
