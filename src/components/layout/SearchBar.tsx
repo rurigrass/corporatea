@@ -15,7 +15,7 @@ interface SearchBarProps {}
 const SearchBar: FC<SearchBarProps> = ({}) => {
   const router = useRouter();
   const [input, setInput] = useState<string>("");
-  const pathname = usePathname()
+  const pathname = usePathname();
 
   const {
     data: queryResults,
@@ -51,21 +51,21 @@ const SearchBar: FC<SearchBarProps> = ({}) => {
   });
 
   //close searchbar when page changes
-  useEffect(()=>{
-    setInput("")
-  },[pathname])
+  useEffect(() => {
+    setInput("");
+  }, [pathname]);
 
   return (
     <Command
       ref={commandRef}
-      className="relative rounded-lg border max-w-lg z-50 overflow-visible"
+      className="relative rounded-lg border max-w-lg overflow-visible"
     >
       <CommandInput
         value={input}
         onValueChange={(text) => {
           setInput(text), debounceRequest();
         }}
-        className="outline-none border-none focus:border-none focus:outline-none ring-0"
+        className=" outline-none border-none focus:border-none focus:outline-none ring-0"
         placeholder="Search by company"
       ></CommandInput>
 
