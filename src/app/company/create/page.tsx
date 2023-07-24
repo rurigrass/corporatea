@@ -89,7 +89,6 @@ const Page = () => {
           <h1 className="text-xl font-semibold">Add a Company</h1>
         </div>
         <hr className="bg-zinc-500 h-px" />
-
         <div>
           <p className="text-lg font-medium">Name</p>
           <div className="relative">
