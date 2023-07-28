@@ -78,7 +78,7 @@ const layout = async ({ params, children }: layoutProps) => {
             <dl className="divide-y divide-gray-100 px-6 py-4 text-sm leading-6 bg-white">
               <div className="flex justify-center pb-4">
                 <div className="relative h-48 w-48 overflow-hidden rounded-lg">
-                  {/* try making image non optional in schema */}
+                  {/* try making image non optional in schema - old people */}
                   {company.imageUrl && company.creatorId ? (
                     <div className="relative h-48 w-48 overflow-hidden rounded-lg">
                       <Image
