@@ -1,3 +1,4 @@
+import ProfilePictureForm from "@/components/settings/ProfilePictureForm";
 import UsernameForm from "@/components/settings/UsernameForm";
 import { Input } from "@/components/ui/Input";
 import { authOptions, getAuthSession } from "@/lib/auth";
@@ -47,6 +48,12 @@ const Page = async ({}) => {
       </div>
       <div className="grid gap-10">
         <UsernameForm
+          user={{
+            id: session.user.id,
+            username: session.user.username || "",
+          }}
+        />
+        <ProfilePictureForm
           user={{
             id: session.user.id,
             username: session.user.username || "",

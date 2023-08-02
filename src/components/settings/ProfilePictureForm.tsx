@@ -25,7 +25,7 @@ interface UsernameFormProps {
   user: Pick<User, "id" | "username">;
 }
 
-const UsernameForm: FC<UsernameFormProps> = ({ user }) => {
+const ProfilePictureForm: FC<UsernameFormProps> = ({ user }) => {
   const router = useRouter();
   const { loginToast } = useCustomToast();
 
@@ -110,11 +110,11 @@ const UsernameForm: FC<UsernameFormProps> = ({ user }) => {
           </div>
         </CardContent>
         <CardFooter>
-          <Button isLoading={isLoading}>Update Username</Button>
+          <Button isLoading={isLoading}>Update Profile Picture</Button>
         </CardFooter>
       </Card>
     </form>
   );
 };
 
-export default UsernameForm;
+export default ProfilePictureForm;
