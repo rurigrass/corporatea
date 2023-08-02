@@ -7,8 +7,8 @@ import { Company, Prisma } from "@prisma/client";
 import debounce from "lodash.debounce";
 import { CommandEmpty, CommandGroup, CommandList } from "cmdk";
 import { usePathname, useRouter } from "next/navigation";
-import { Users } from "lucide-react";
 import { useOnClickOutside } from "@/hooks/use-on-click-outside";
+import Image from "next/image";
 
 interface SearchBarProps {}
 
@@ -76,14 +76,30 @@ const SearchBar: FC<SearchBarProps> = ({}) => {
             <CommandGroup>
               {queryResults?.map((company) => (
                 <CommandItem
+                  className="hover:cursor-pointer"
                   key={company.id}
                   value={company.name}
                   onSelect={(e) => {
                     router.push(`/company/${company.name}`);
                   }}
                 >
-                  <Users className="mr-2 h-4 w-4" />
-                  <a href={`/company/${company.name}`}>{company.name}</a>
+                  {/* <Users className="mr-2 h-4 w-4" /> */}
+                  {company.imageUrl && company.creatorId ? (
+                    <div className="relative mr-2 h-4 w-4 overflow-hidden rounded-sm">
+                      <Image
+                        fill
+                        className="relative"
+                        src={company.imageUrl}
+                        alt={company.creatorId}
+                        style={{ objectFit: "cover" }}
+                      />
+                    </div>
+                  ) : (
+                    <div>No Image Available</div>
+                  )}
+                  {/* <a href={`/company/${company.name}`}> */}
+                  {company.name}
+                  {/* </a> */}
                 </CommandItem>
               ))}
             </CommandGroup>
