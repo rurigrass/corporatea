@@ -22,12 +22,18 @@ import { useCustomToast } from "@/hooks/use-custom-toast";
 import { useRouter } from "next/navigation";
 
 interface UsernameFormProps {
-  user: Pick<User, "id" | "username">;
+  user: Pick<User, "id" | "image">;
 }
+
+type imageProps = {
+  fileUrl: string;
+  fileKey: string;
+};
 
 const ProfilePictureForm: FC<UsernameFormProps> = ({ user }) => {
   const router = useRouter();
   const { loginToast } = useCustomToast();
+  const [image, setImage] = useState<imageProps>({ fileUrl: "", fileKey: "" });
 
   const {
     handleSubmit,
@@ -97,13 +103,14 @@ const ProfilePictureForm: FC<UsernameFormProps> = ({ user }) => {
             <Label className="sr-only" htmlFor="name">
               username
             </Label>
-            <Input
+            {user.image === "" ? <div>no image</div> : <div>{user.image}</div>}
+            {/* <Input
               id="name"
-              className="w-[400px]"
+              className="max-w-[400px]"
               size={32}
               placeholder={user.username ?? "username"}
               {...register("name")}
-            />
+            /> */}
             {errors?.name && (
               <p className="px-1 text-xs text-red-600">{errors.name.message}</p>
             )}
