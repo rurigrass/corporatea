@@ -54,6 +54,7 @@ model User {
 
   username String? @unique
 
+  imageId     String?
   image       String?
   accounts    Account[]
   sessions    Session[]

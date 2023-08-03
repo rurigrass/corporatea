@@ -53,12 +53,12 @@ const Page = async ({}) => {
             username: session.user.username || "",
           }}
         />
-        {/* <ProfilePictureForm
+        <ProfilePictureForm
           user={{
             id: session.user.id,
             image: session.user.image || "",
           }}
-        /> */}
+        />
       </div>
     </div>
   );
