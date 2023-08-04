@@ -70,7 +70,7 @@ const ProfilePictureForm = ({ user }: UsernameFormProps) => {
                   endpoint="imageUploader"
                   onClientUploadComplete={(res) => {
                     // Do something with the response
-                    // console.log("DARES ", res);
+                    // console.log("DARES ",  res);
 
                     if (res) {
                       setImage(res[0]);
