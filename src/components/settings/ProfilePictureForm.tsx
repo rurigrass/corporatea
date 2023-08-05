@@ -76,7 +76,7 @@ const ProfilePictureForm = ({ user }: UsernameFormProps) => {
                       setImage(res[0]);
                       const json = JSON.stringify(res);
                       // console.log("Files: ", json);
-                      // alert("Upload Completed");
+                      // alert("Upload Completed") ;
                     }
                   }}
                   onUploadError={(error: Error) => {
