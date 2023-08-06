@@ -54,13 +54,15 @@ model User {
 
   username String? @unique
 
-  imageId     String?
-  image       String?
-  accounts    Account[]
-  sessions    Session[]
-  Spill       Spill[]
-  Comment     Comment[]
-  CommentVote CommentVote[]
+  imageId        String?
+  imageUrl       String?
+  useGoogleImage Boolean?
+  image          String?
+  accounts       Account[]
+  sessions       Session[]
+  Spill          Spill[]
+  Comment        Comment[]
+  CommentVote    CommentVote[]
 }
 
 model Company {

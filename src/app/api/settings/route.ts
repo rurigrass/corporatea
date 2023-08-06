@@ -4,6 +4,8 @@ import { UsernameValidator } from "@/lib/validators/username";
 import { z } from "zod";
 
 export async function PATCH(req: Request) {
+  console.log("THE REQUEST ", req);
+
   try {
     const session = await getAuthSession();
     if (!session?.user) {
