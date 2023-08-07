@@ -56,7 +56,7 @@ model User {
 
   imageId        String?
   imageUrl       String?
-  useGoogleImage Boolean?
+  useGoogleImage Boolean       @default(false)
   image          String?
   accounts       Account[]
   sessions       Session[]
