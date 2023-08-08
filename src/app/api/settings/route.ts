@@ -18,7 +18,7 @@ export async function PATCH(req: Request) {
     const { name } = UsernameValidator.parse(body);
     console.log(name);
 
-    //check if username already exists - also let user update username to same username
+    //check if username already exists - also let  user update username to same username
     if (session.user.username !== name) {
       const usernameExists = await db.user.findFirst({
         where: {
