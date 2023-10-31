@@ -16,9 +16,7 @@ const GeneralFeed = async () => {
     take: INFINITE_SCROLLING_PAGINATION_RESULTS,
   });
 
-  return (
-      <SpillFeed initialSpills={spills} />
-  );
+  return <SpillFeed initialSpills={spills} />;
 };
 
 export default GeneralFeed;

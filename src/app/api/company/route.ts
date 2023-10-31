@@ -49,8 +49,6 @@ export async function POST(req: Request) {
       return new Response(error.message, { status: 422 });
     }
 
-    console.log(error);
-
     return new Response("Could not add company", { status: 500 });
   }
 }
